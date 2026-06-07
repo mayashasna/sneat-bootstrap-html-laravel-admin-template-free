@@ -42,6 +42,10 @@ export default defineConfig({
         'resources/css/app.css',
         'resources/assets/css/demo.css',
         'resources/js/app.js',
+
+        // ⭐ أضفنا ملف المخطط هنا ⭐
+        'resources/assets/js/dashboards-analytics.js',
+
         ...pageJsFiles,
         ...vendorJsFiles,
         ...LibsJsFiles,

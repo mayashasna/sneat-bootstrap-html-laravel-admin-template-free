@@ -17,7 +17,7 @@ $customizerHidden = $customizerHidden ?? '';
 $navbarDetached = 'navbar-detached';
 $menuFixed = isset($configData['menuFixed']) ? $configData['menuFixed'] : '';
 if (isset($navbarType)) {
-$configData['navbarType'] = $navbarType;
+    $configData['navbarType'] = $navbarType;
 }
 $navbarType = isset($configData['navbarType']) ? $configData['navbarType'] : '';
 $footerFixed = isset($configData['footerFixed']) ? $configData['footerFixed'] : '';
@@ -25,7 +25,6 @@ $menuCollapsed = isset($configData['menuCollapsed']) ? $configData['menuCollapse
 
 /* Content classes */
 $container = ($container ?? 'container-xxl');
-
 @endphp
 
 @section('layoutContent')
@@ -33,57 +32,69 @@ $container = ($container ?? 'container-xxl');
     <div class="layout-container">
 
         @if ($isMenu)
-        @include('layouts/sections/menu/verticalMenu')
+            @include('layouts/sections/menu/verticalMenu')
         @endif
-
 
         <!-- Layout page -->
         <div class="layout-page">
 
-            {{-- Below commented code read by artisan command while installing jetstream. !! Do not remove if you want to use jetstream. --}}
+            {{-- Jetstream banner --}}
             {{-- <x-banner /> --}}
 
             <!-- BEGIN: Navbar-->
             @if ($isNavbar)
-            @include('layouts/sections/navbar/navbar')
+                @include('layouts/sections/navbar/navbar')
             @endif
             <!-- END: Navbar-->
-
 
             <!-- Content wrapper -->
             <div class="content-wrapper">
 
+                <!-- Global Back Button -->
+                <div class="container-xxl mt-3">
+                    <button type="button" onclick="history.back()" class="btn btn-outline-secondary btn-sm">
+                        <i class="ph-arrow-right"></i>
+                        {{ __('common.back') }}
+                    </button>
+                </div>
+                <!-- / Global Back Button -->
+
                 <!-- Content -->
                 @if ($isFlex)
-                <div class="{{ $container }} d-flex align-items-stretch flex-grow-1 p-0">
-                    @else
+                    <div class="{{ $container }} d-flex align-items-stretch flex-grow-1 p-0">
+                @else
                     <div class="{{ $container }} flex-grow-1 container-p-y">
-                        @endif
+                @endif
 
                         @yield('content')
 
                     </div>
-                    <!-- / Content -->
+                <!-- / Content -->
 
-                    <!-- Footer -->
-                    @if ($isFooter)
+                <!-- Footer -->
+                @if ($isFooter)
                     @include('layouts/sections/footer/footer')
-                    @endif
-                    <!-- / Footer -->
-                    <div class="content-backdrop fade"></div>
-                </div>
-                <!--/ Content wrapper -->
+                @endif
+                <!-- / Footer -->
+
+                <div class="content-backdrop fade"></div>
             </div>
-            <!-- / Layout page -->
+            <!--/ Content wrapper -->
+
         </div>
+        <!-- / Layout page -->
 
         @if ($isMenu)
-        <!-- Overlay -->
-        <div class="layout-overlay layout-menu-toggle"></div>
+            <!-- Overlay -->
+            <div class="layout-overlay layout-menu-toggle"></div>
         @endif
+
         <!-- Drag Target Area To SlideIn Menu On Small Screens -->
         <div class="drag-target"></div>
+
     </div>
     <!-- / Layout wrapper -->
 </div>
 @endsection
+{{-- Firebase FCM --}}
+@include('_partials.firebase')

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>User Login</title>
+</head>
+<body>
+
+<h2>Login</h2>
+
+<input type="text" id="phone" placeholder="Phone"><br><br>
+<input type="password" id="password" placeholder="Password"><br><br>
+<button onclick="login()">Login</button>
+
+<script>
+    // امسح أي جلسة قديمة دائماً عند فتح صفحة اللوغن
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+    async function login() {
+        const phone    = document.getElementById("phone").value.trim();
+        const password = document.getElementById("password").value.trim();
+
+        if (!phone || !password) {
+            alert("يرجى إدخال رقم الهاتف وكلمة المرور");
+            return;
+        }
+
+        try {
+            const response = await fetch("http://127.0.0.1:8000/api/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ phone, password })
+            });
+
+            if (!response.ok) {
+                alert("خطأ من السيرفر: " + response.status);
+                return;
+            }
+
+            const data = await response.json();
+
+            if (!data.status) {
+                alert(data.message || "فشل تسجيل الدخول");
+                return;
+            }
+
+            localStorage.setItem("token", data.data.token);
+            localStorage.setItem("user", JSON.stringify(data.data.user));
+
+            window.location.href = "/chat-test";
+
+        } catch (err) {
+            console.error("Login error:", err);
+            alert("تعذّر الاتصال بالسيرفر");
+        }
+    }
+</script>
+
+</body>
+</html>

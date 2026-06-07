@@ -7,7 +7,7 @@
 /storage/*.key
 /vendor
 
-# .env
+.env
 .env.backup
 .env.production
 .phpunit.result.cache
@@ -26,3 +26,12 @@ yarn-error.log
 !/public/assets/*
 /public/css
 /public/js
+
+# ملفات كبيرة وغير ضرورية
+*.exe
+*.zip
+*.docx
+*.csv
+*.pem
+/storage/private
+/storage/media-library/temp

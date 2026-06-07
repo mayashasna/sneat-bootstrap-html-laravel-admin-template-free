@@ -46,6 +46,19 @@ use Illuminate\Support\Facades\Route;
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
                 <li>
+    <a class="dropdown-item" href="{{ route('lang.switch', 'ar') }}">
+        <i class="bx bx-globe me-2"></i>
+        <span class="align-middle">العربية</span>
+    </a>
+</li>
+
+<li>
+    <a class="dropdown-item" href="{{ route('lang.switch', 'en') }}">
+        <i class="bx bx-globe me-2"></i>
+        <span class="align-middle">English</span>
+    </a>
+</li>
+                <li>
                     <a class="dropdown-item" href="javascript:void(0);">
                         <div class="d-flex">
                             <div class="flex-shrink-0 me-3">
@@ -85,9 +98,14 @@ use Illuminate\Support\Facades\Route;
                     <div class="dropdown-divider my-1"></div>
                 </li>
                 <li>
-                    <a class="dropdown-item" href="javascript:void(0);">
-                        <i class="icon-base bx bx-power-off icon-md me-3"></i><span>Log Out</span>
-                    </a>
+                    <form action="{{ route('admin.logout') }}" method="POST">
+    @csrf
+    <button class="dropdown-item" type="submit">
+        <i class="icon-base bx bx-power-off icon-md me-3"></i>
+        <span>Log Out</span>
+    </button>
+</form>
+
                 </li>
             </ul>
         </li>

@@ -103,6 +103,8 @@ return [
         ...array_filter(
             explode(',', env('APP_PREVIOUS_KEYS', ''))
         ),
+
+        
     ],
 
     /*

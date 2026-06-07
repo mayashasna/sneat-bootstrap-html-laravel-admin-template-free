@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\ContactController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\dashboard\Analytics;
 use App\Http\Controllers\layouts\WithoutMenu;
@@ -107,3 +109,47 @@ Route::get('/form/layouts-horizontal', [HorizontalForm::class, 'index'])->name('
 
 // tables
 Route::get('/tables/basic', [TablesBasic::class, 'index'])->name('tables-basic');
+#########################################################################################
+
+Route::get('/lang/{lang}', function ($lang) {
+    // تأكد إنو اللغة المطلوبة موجودة
+    if (! in_array($lang, ['ar', 'en'])) {
+        $lang = 'ar';
+    }
+
+    // خزّن اللغة بالجلسة
+    session(['locale' => $lang]);
+
+    // ارجعي لنفس الصفحة
+    return back();
+})->name('lang.switch');
+
+Route::get('/change-language/{lang}', function ($lang) {
+    session(['locale' => $lang]);
+    app()->setLocale($lang);
+    return back();
+})->name('change.language');
+
+// حل نهائي لمشكلة Route [login] not defined
+Route::get('/login', function () {
+    return redirect()->route('admin.login');
+})->name('login');
+
+
+Route::get('/test-firebase', function () {
+    try {
+        $messaging = app('firebase.messaging');
+        return 'Firebase connection successful!';
+    } catch (\Exception $e) {
+        return 'Firebase error: ' . $e->getMessage();
+    }
+});
+Route::get('/chat-test', function () {
+    return view('chat');
+});
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
+    Route::get('/admin/contact/show', [ContactController::class, 'show'])->name('admin.contact.show');
+
+});
+require __DIR__.'/admin.php';

@@ -1,5 +1,15 @@
 <!DOCTYPE html>
-<html lang="en" class="layout-menu-fixed layout-compact" data-assets-path="{{ asset('/assets') . '/' }}" dir="ltr" data-skin="default" data-base-url="{{ url('/') }}" data-framework="laravel" data-bs-theme="light" data-template="vertical-menu-template">
+<html
+    lang="{{ app()->getLocale() }}"
+    class="layout-menu-fixed layout-compact"
+    data-assets-path="{{ asset('/assets') . '/' }}"
+    dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}"
+    data-skin="default"
+    data-base-url="{{ url('/') }}"
+    data-framework="laravel"
+    data-bs-theme="light"
+    data-template="vertical-menu-template"
+>
 
 <head>
     <meta charset="utf-8" />
@@ -36,11 +46,10 @@
     <!-- Layout Content -->
     @yield('layoutContent')
     <!--/ Layout Content -->
-
-    
-
+<link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <!-- Include Scripts -->
     @include('layouts/sections/scripts')
+
 </body>
 
 </html>

@@ -2,47 +2,62 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
+
+/**
+ * @mixin IdeHelperUser
+ */
+/**
+ * @property \Illuminate\Database\Eloquent\Collection $businessAccounts
+ */
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, Notifiable , HasRoles;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
         'name',
-        'email',
+        'phone',
         'password',
+        'otp_code',
+        'otp_expires_at',
+        'status',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
         'password',
-        'remember_token',
+        'otp_code',
     ];
-
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    protected $casts = [
+    'otp_expires_at' => 'datetime',
+];
+public function businessAccounts()
+{
+    return $this->hasMany(\App\Models\BusinessAccount::class, 'user_id');
+}
+public function devices()
+{
+    return $this->hasMany(DeviceToken::class);
+}
+public function favoriteServices()
+{
+    return $this->belongsToMany(
+        \App\Models\Service::class,
+        'service_favorites',
+        'user_id',
+        'service_id'
+    )->withTimestamps();
+}
+public function conversations()
+{
+    return $this->belongsToMany(
+        \App\Models\Conversation::class,
+        'conversation_participants',
+        'user_id',
+        'conversation_id'
+    );
+}
 }
